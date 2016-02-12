@@ -174,6 +174,8 @@ def main():
             server_url=dict(required=True, aliases=['url']),
             login_user=dict(required=True),
             login_password=dict(required=True, no_log=True),
+            http_login_user=dict(required=False, default=None),
+            http_login_password=dict(required=False, default=None, no_log=True),
             host_name=dict(required=True),
             macro_name=dict(required=True),
             macro_value=dict(required=True),
@@ -198,7 +200,7 @@ def main():
     zbx = None
     # login to zabbix
     try:
-        zbx = ZabbixAPIExtends(server_url, timeout=timeout)
+        zbx = ZabbixAPIExtends(server_url, timeout=timeout, user=http_login_user, passwd=http_login_password)
         zbx.login(login_user, login_password)
     except Exception, e:
         module.fail_json(msg="Failed to connect to Zabbix server: %s" % e)

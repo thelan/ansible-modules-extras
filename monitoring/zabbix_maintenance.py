@@ -272,9 +272,12 @@ def main():
             host_groups=dict(type='list', required=False, default=None, aliases=['host_group']),
             login_user=dict(required=True),
             login_password=dict(required=True, no_log=True),
+            http_login_user=dict(required=False, default=None),
+            http_login_password=dict(required=False, default=None, no_log=True),
             name=dict(required=True),
             desc=dict(required=False, default="Created by Ansible"),
             collect_data=dict(type='bool', required=False, default=True),
+            timeout=dict(type='int', default=10)
         ),
         supports_check_mode=True,
     )
@@ -287,18 +290,22 @@ def main():
     state = module.params['state']
     login_user = module.params['login_user']
     login_password = module.params['login_password']
+    http_login_user = module.params['http_login_user']
+    http_login_password = module.params['http_login_password']
     minutes = module.params['minutes']
     name = module.params['name']
     desc = module.params['desc']
     server_url = module.params['server_url']
     collect_data = module.params['collect_data']
+    timeout = module.params['timeout']
+
     if collect_data:
         maintenance_type = 0
     else:
         maintenance_type = 1
 
     try:
-        zbx = ZabbixAPI(server_url)
+        zbx = ZabbixAPI(server_url, timeout=timeout, user=http_login_user, passwd=http_login_password)
         zbx.login(login_user, login_password)
     except BaseException as e:
         module.fail_json(msg="Failed to connect to Zabbix server: %s" % e)

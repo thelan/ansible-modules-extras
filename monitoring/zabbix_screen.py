@@ -142,8 +142,8 @@ except ImportError:
 class ZabbixAPIExtends(ZabbixAPI):
     screenitem = None
 
-    def __init__(self, server, timeout, **kwargs):
-        ZabbixAPI.__init__(self, server, timeout=timeout)
+    def __init__(self, server, timeout, user, passwd, **kwargs):
+        ZabbixAPI.__init__(self, server, timeout=timeout, user=user, passwd=passwd)
         self.screenitem = ZabbixAPISubClass(self, dict({"prefix": "screenitem"}, **kwargs))
 
 
@@ -318,6 +318,8 @@ def main():
             server_url=dict(required=True, aliases=['url']),
             login_user=dict(required=True),
             login_password=dict(required=True, no_log=True),
+            http_login_user=dict(required=False, default=None),
+            http_login_password=dict(required=False, default=None, no_log=True),
             timeout=dict(type='int', default=10),
             screens=dict(type='list', required=True)
         ),
@@ -330,13 +332,15 @@ def main():
     server_url = module.params['server_url']
     login_user = module.params['login_user']
     login_password = module.params['login_password']
+    http_login_user = module.params['http_login_user']
+    http_login_password = module.params['http_login_password']
     timeout = module.params['timeout']
     screens = module.params['screens']
 
     zbx = None
     # login to zabbix
     try:
-        zbx = ZabbixAPIExtends(server_url, timeout=timeout)
+        zbx = ZabbixAPIExtends(server_url, timeout=timeout, user=http_login_user, passwd=http_login_password)
         zbx.login(login_user, login_password)
     except Exception, e:
         module.fail_json(msg="Failed to connect to Zabbix server: %s" % e)
