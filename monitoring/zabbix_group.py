@@ -49,6 +49,16 @@ options:
         description:
             - Zabbix user password.
         required: true
+    http_login_user:
+        description:
+            - Basic Auth login
+        required: false
+        default: None
+    http_login_password:
+        description:
+            - Basic Auth password
+        required: false
+        default: None
     state:
         description:
             - Create or delete host group.
