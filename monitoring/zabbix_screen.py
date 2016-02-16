@@ -53,11 +53,13 @@ options:
             - Basic Auth login
         required: false
         default: None
+        version_added: 2.1
     http_login_password:
         description:
             - Basic Auth password
         required: false
         default: None
+        version_added: 2.1
     timeout:
         description:
             - The timeout of API request (seconds).

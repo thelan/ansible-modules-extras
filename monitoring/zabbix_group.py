@@ -54,11 +54,13 @@ options:
             - Basic Auth login
         required: false
         default: None
+        version_added: 2.1
     http_login_password:
         description:
             - Basic Auth password
         required: false
         default: None
+        version_added: 2.1
     state:
         description:
             - Create or delete host group.

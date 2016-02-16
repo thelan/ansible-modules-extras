@@ -57,11 +57,13 @@ options:
             - Basic Auth login
         required: false
         default: None
+        version_added: 2.1
     http_login_password:
         description:
             - Basic Auth password
         required: false
         default: None
+        version_added: 2.1
     host_names:
         description:
             - Hosts to manage maintenance window for.
